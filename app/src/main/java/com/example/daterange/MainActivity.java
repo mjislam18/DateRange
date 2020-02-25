@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -91,8 +92,7 @@ public class MainActivity extends AppCompatActivity  {
 
     }
 
-    public void onClickEndButton(View view)
-    {
+    public void onClickEndButton(View view) throws ParseException {
         calendar = Calendar.getInstance();
 
         int year = calendar.get(Calendar.YEAR);
@@ -107,9 +107,24 @@ public class MainActivity extends AppCompatActivity  {
         }, year, month, day);
         dpd.show();
 
+        String startTxt = (String) txtStartDate.getText();
+        String endTxt = (String) txtEndDate.getText();
+
+        DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+        Date startDate = format.parse(startTxt);
+        Date endDate = format.parse(endTxt);
+
+        if (endDate.getTime() < startDate.getTime())
+        {
+            Toast toast = Toast.makeText(getApplicationContext(),
+                    "Select end date which is after start date",
+                    Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
     }
 
-    public void checkIfEndIsBeforeStart(View view) throws ParseException {
+    /*public void checkIfEndIsBeforeStart(View view) throws ParseException {
         TextView trueOrFalse = findViewById(R.id.trueOrFalse);
         String startTxt = (String) txtStartDate.getText();
         String endTxt = (String) txtEndDate.getText();
@@ -126,6 +141,6 @@ public class MainActivity extends AppCompatActivity  {
         {
             trueOrFalse.setText("Correct, end date is after start date");
         }
-    }
+    } */
 
 }
